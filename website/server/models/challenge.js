@@ -3,7 +3,7 @@ import validator from 'validator';
 import _ from 'lodash';
 import { TaskQueue } from 'cwait';
 import baseModel from '../libs/baseModel';
-import * as Tasks from './task';
+import * as Tasks from './task'; // eslint-disable-line import/no-cycle
 import { model as User } from './user'; // eslint-disable-line import/no-cycle
 import { // eslint-disable-line import/no-cycle
   model as Group,
@@ -12,7 +12,7 @@ import { removeFromArray } from '../libs/collectionManipulators';
 import shared from '../../common';
 import { sendTxn as txnEmail } from '../libs/email'; // eslint-disable-line import/no-cycle
 import { sendNotification as sendPushNotification } from '../libs/pushNotifications';
-import { syncableAttrs, setNextDue } from '../libs/taskManager';
+import { syncableAttrs, setNextDue } from '../libs/taskManager'; // eslint-disable-line import/no-cycle
 
 const { Schema } = mongoose;
 

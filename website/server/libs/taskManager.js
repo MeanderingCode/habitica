@@ -1,10 +1,10 @@
 import moment from 'moment';
 import _ from 'lodash';
-import * as Tasks from '../models/task';
+import * as Tasks from '../models/task'; // eslint-disable-line import/no-cycle
 import {
   BadRequest,
 } from './errors';
-import {
+import { // eslint-disable-line import/no-cycle
   SHARED_COMPLETION,
 } from './groupTasks';
 import shared from '../../common';

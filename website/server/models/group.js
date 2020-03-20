@@ -14,7 +14,7 @@ import {
   setUserStyles,
   messageDefaults,
 } from './message';
-import * as Tasks from './task';
+import * as Tasks from './task'; // eslint-disable-line import/no-cycle
 import { removeFromArray } from '../libs/collectionManipulators';
 import payments from '../libs/payments/payments'; // eslint-disable-line import/no-cycle
 import { // eslint-disable-line import/no-cycle
@@ -29,7 +29,7 @@ import {
 import baseModel from '../libs/baseModel';
 import { sendTxn as sendTxnEmail } from '../libs/email'; // eslint-disable-line import/no-cycle
 import { sendNotification as sendPushNotification } from '../libs/pushNotifications';
-import {
+import { // eslint-disable-line import/no-cycle
   syncableAttrs,
 } from '../libs/taskManager';
 import {
@@ -1562,7 +1562,7 @@ schema.methods.syncTask = async function groupSyncTask (taskToSync, user) {
 };
 
 schema.methods.linkTask = async function groupLinkTask (linkingTask, user) {
-  let toSave = [];
+  const toSave = [];
   if (linkingTask.group.assignedUsers.indexOf(user._id) === -1) {
     linkingTask.group.assignedUsers.push(user._id);
   }
