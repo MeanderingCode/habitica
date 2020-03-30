@@ -1,5 +1,5 @@
 import defaults from 'lodash/defaults';
-import * as Tasks from '../models/task';
+import * as Tasks from '../models/task'; // eslint-disable-line import/no-cycle
 import {model as Groups} from '../models/group';
 import {model as Users} from '../models/user/index';
 import moment from 'moment';
@@ -151,6 +151,16 @@ async function _updateAssignedUsersTasks (masterTask, groupMemberTask) {
   }
 }
 
+async function _deleteUnfinishedTasks (groupMemberTask) {
+  await Tasks.Task.deleteMany({
+    'group.taskId': groupMemberTask.group.taskId,
+    $and: [
+      { userId: { $exists: true } },
+      { userId: { $ne: groupMemberTask.userId } },
+    ],
+  }).exec();
+}
+
 async function _evaluateAllAssignedCompletion (masterTask, groupMemberTask) {
   let completions;
   if (masterTask.group.approval && masterTask.group.approval.required) {
@@ -160,7 +170,7 @@ async function _evaluateAllAssignedCompletion (masterTask, groupMemberTask) {
     }).exec();
     // Since an approval is not yet saved into the group member task, count it
     // But do not recount a group member completing an already approved task
-    if (!groupMemberTask.completed) completions++;
+    if (!groupMemberTask.completed) completions += 1;
   } else {
     completions = await Tasks.Task.count({
       'group.taskId': masterTask._id,
@@ -199,7 +209,7 @@ async function groupTaskCompleted (groupMemberTask, user, now) {
 }
 
 async function handleSharedCompletion (groupMemberTask) {
-  let masterTask = await Tasks.Task.findOne({
+  const masterTask = await Tasks.Task.findOne({
     _id: groupMemberTask.group.taskId,
   }).exec();
 

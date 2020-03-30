@@ -1,28 +1,29 @@
 import { SEASONAL_SETS } from '../content/constants';
 
-module.exports = {
+export default {
   opened: true,
 
-  currentSeason: 'Fall',
+  currentSeason: 'Spring',
 
-  dateRange: { start: '2019-09-24', end: '2019-10-31' },
+  dateRange: { start: '2020-03-19', end: '2020-04-30' },
 
   availableSets: [
-    ...SEASONAL_SETS.fall,
+    ...SEASONAL_SETS.spring,
   ],
 
   pinnedSets: {
-    wizard: 'fall2019CyclopsSet',
-    warrior: 'fall2019RavenSet',
-    rogue: 'fall2019OperaticSpecterSet',
-    healer: 'fall2019LichSet',
+    healer: 'spring2020IrisHealerSet',
+    rogue: 'spring2020LapisLazuliRogueSet',
+    warrior: 'spring2020BeetleWarriorSet',
+    wizard: 'spring2020PuddleMageSet',
   },
 
   availableSpells: [
   ],
 
   availableQuests: [
+    'egg',
   ],
 
-  featuredSet: 'fall2018AlterEgoSet',
+  featuredSet: 'spring2020PuddleMageSet',
 };
