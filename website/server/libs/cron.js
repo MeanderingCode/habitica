@@ -347,7 +347,7 @@ export async function cron (options = {}) {
   let dailyChecked = 0; // how many dailies were checked?
   let dailyDueUnchecked = 0; // how many dailies were un-checked?
   let atLeastOneDailyDue = false; // were any dailies due?
-  const groupSharedSingleDailies = [];
+  const groupSharedDailies = [];
   if (!user.party.quest.progress.down) user.party.quest.progress.down = 0;
 
   tasksByType.dailys.forEach(task => {
@@ -442,7 +442,7 @@ export async function cron (options = {}) {
       // Does this cause issues?
       // Pushing these closures to an array of Promises outside the forEach
       // This allows both sequential processing and async checking for shared completion
-      groupSharedSingleDailies.push(
+      groupSharedDailies.push(
         (async function determineGroupCompletion (memberTask, memberUser, memberTime) {
           memberTask.completed = await groupTaskCompleted(memberTask, memberUser, memberTime);
         }(task, user, now)),
@@ -450,7 +450,7 @@ export async function cron (options = {}) {
     } else {
       task.completed = false;
       if (task.group) {
-        groupSharedSingleDailies.push(async () => {
+        groupSharedDailies.push(async () => {
           await groupTaskNewDay(task, user);
         });
       }
@@ -472,7 +472,7 @@ export async function cron (options = {}) {
     }
   });
 
-  await Promise.all(groupSharedSingleDailies);
+  await Promise.all(groupSharedDailies);
 
   resetHabitCounters(user, tasksByType, now, daysMissed);
 
